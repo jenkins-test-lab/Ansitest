@@ -1,0 +1,16 @@
+---
+- name: Ansible ping test
+  hosts: localhost
+  tasks:
+    - name: Ping localhost
+      ping:
+
+    - name: hostname check
+      shell: |
+        whoami
+        hostname
+        pwd
+        uptime & uname -a
+      register: shell_results
+    - debug:
+        var: shell_results.stdout
