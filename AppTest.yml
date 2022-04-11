@@ -1,6 +1,6 @@
 ---
 #Install JDK and TOMCAT
-- hosts: test
+- hosts: selenium
 
   tasks:
   
