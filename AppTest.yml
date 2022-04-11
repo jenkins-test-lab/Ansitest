@@ -6,3 +6,7 @@
   
   - name: Application testing started
     ansible.windows.win_command: powershell -file c:\apps\jenkins\webtest.ps1
+    register: shell_results
+    
+  - debug:
+        var: shell_results.stdout
