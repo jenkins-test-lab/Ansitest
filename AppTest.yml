@@ -1,0 +1,8 @@
+---
+#Install JDK and TOMCAT
+- hosts: test
+
+  tasks:
+  
+  - name: Application testing started
+    command: powershell -file c:\apps\jenkins\webtest.ps1
