@@ -1,0 +1,59 @@
+---
+#Install JDK and TOMCAT
+- hosts: test
+
+  tasks:
+
+  - name: Install the JDK
+    yum:
+      name: java-1.8.0-openjdk.x86_64
+      state: present
+    become: yes
+
+  - name: Creating a TOMCAT user
+    user:
+      name: tomcat
+    become: yes
+
+  - name: Get TOMCAT installer
+    get_url:
+      url: https://archive.apache.org/dist/tomcat/tomcat-9/v9.0.48/bin/apache-tomcat-9.0.48.tar.gz
+      dest: ~/apache-tomcat.tar.gz
+    become: yes
+
+  - name: Install tomcat
+    unarchive:
+      src: ~/apache-tomcat.tar.gz
+      dest:  ~/
+      remote_src: yes
+    become: yes
+
+  - name: Remove installer
+    file:
+      state: absent
+      path: ~/apache-tomcat-8.5.15.tar.gz
+    become: yes
+
+  - name: Open the port used by Tomcat on the firewall
+    firewalld:
+      port: 8080/tcp
+      permanent: yes
+      immediate: yes
+      state: enabled
+    become: yes
+
+  - name: Copy Tomcat service from local to remote
+    copy:
+      src: tomcat.service
+      dest: /etc/systemd/system/
+      mode: 0755
+    become: yes
+
+  - name: Start and Enable Tomcat 10 on sever
+    systemd:
+      name: tomcat
+      state: started
+      enabled: true
+    become: yes
+
+

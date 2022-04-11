@@ -1,0 +1,93 @@
+---
+#Install JDK and TOMCAT
+- hosts: test
+
+  tasks:
+
+  - name: Install the JDK
+    yum:
+      name: java-1.8.0-openjdk.x86_64
+      state: present
+    become: yes
+
+  - name: Creating a TOMCAT user
+    user:
+      name: tomcat
+    become: yes
+
+  - name: Get TOMCAT installer
+    get_url:
+      url: https://archive.apache.org/dist/tomcat/tomcat-9/v9.0.48/bin/apache-tomcat-9.0.48.tar.gz
+      dest: /usr/share/apache-tomcat.tar.gz
+    become: yes
+
+  - name: Install tomcat
+    unarchive:
+      src: /usr/share/apache-tomcat.tar.gz
+      dest:  /usr/share/
+      remote_src: yes
+    become: yes
+
+  - name: Create tomcat link 
+    file:
+      src: "/usr/share/apache-tomcat-9.0.48/"
+      dest: "/usr/share/tomcat"
+      state: link
+    become: yes
+
+  - name: Set tomcat permission
+    command: chown -R tomcat:tomcat /usr/share/apache-tomcat-9.0.48
+    become: yes
+
+  - name: Remove installer
+    file:
+      state: absent
+      path: /usr/share/apache-tomcat.tar.gz
+    become: yes
+
+  - name: Open the port used by Tomcat on the firewall
+    firewalld:
+      port: 8080/tcp
+      permanent: yes
+      immediate: yes
+      state: enabled
+    become: yes
+  
+  - name: Copy Tomcat service from local to remote
+    copy:
+      src: tomcat-users.xml
+      dest: /usr/share/tomcat/conf/tomcat-users.xml
+      mode: 0755
+      owner: tomcat
+    become: yes
+
+  - name: Copy Tomcat service from local to remote
+    copy:
+      src: manager-context.xml
+      dest: /usr/share/tomcat/webapps/manager/META-INF/context.xml
+      mode: 0755
+      owner: tomcat
+    become: yes
+
+  - name: Copy Tomcat service from local to remote
+    copy:
+      src: host-manager-context.xml
+      dest: /usr/share/tomcat/webapps/host-manager/META-INF/context.xml
+      mode: 0755
+      owner: tomcat
+    become: yes
+
+  - name: Copy Tomcat service from local to remote
+    copy:
+      src: tomcat.service
+      dest: /etc/systemd/system/
+      mode: 0755
+    become: yes
+
+  - name: Start and Enable Tomcat  on sever
+    systemd:
+      name: tomcat
+      state: restarted
+      enabled: true
+    become: yes
+
