@@ -43,6 +43,11 @@
 -->
 
 <role rolename="admin-gui,manager-gui"/> 
-<user username="admin" password="t0mcat@123" roles="admin-gui,manager-gui,manager-script"/>
+<role rolename="manager-script"/>
+<role rolename="admin"/> 
+<role rolename="manager"/>
+<role rolename="manager-jmx"/>
+<role rolename="manager-status"/>
+<user username="admin" password="t0mcat@123" roles="admin-gui,manager-gui,manager-script,-,manager,manager-jmx,manager-status"/>
 
 </tomcat-users>
