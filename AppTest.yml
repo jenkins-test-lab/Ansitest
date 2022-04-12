@@ -3,10 +3,21 @@
 - hosts: selenium
 
   tasks:
-  
+
+  - name: Copy folder to C:\Temp (results in C:\Temp\temp_files)
+    ansible.windows.win_copy:
+      src: selenium
+      dest: c:\apps\jenkins
+
   - name: Application testing started
-    ansible.windows.win_command: powershell -file c:\apps\jenkins\webtest.ps1
+    ansible.windows.win_command: powershell -file c:\apps\jenkins\selenium\webtest.ps1
     register: shell_results
-    
+
   - debug:
         var: shell_results.stdout
+
+  - name: get the report from selenium server
+    ansible.builtin.fetch:
+      src: 'C:\apps\jenkins\test.html'
+      dest: "."
+      flat: true
