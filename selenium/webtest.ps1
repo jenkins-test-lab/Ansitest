@@ -27,7 +27,7 @@ if($initlogin.Text -eq "Login"){
     Write-Output "Homepage loaded successfully"
     $img = $dd.GetScreenshot()
     $report += "<tr><td>$(Get-Date -Format 'dd/MM/yyyy HH:mm:ss'): Homepage loaded successfully</td></tr>"
-    $report += "<tr><td><img src=`"data:image/jpeg;base64,$($img.AsBase64EncodedString)`" width=""800"" height=""600""></td></tr>"
+    $report += "<tr><td><img src=`"data:image/png;base64,$($img.AsBase64EncodedString)`" width=""800"" height=""600""></td></tr>"
     $Screenshot = [OpenQA.Selenium.Support.Extensions.WebDriverExtensions]::TakeScreenshot($dd)
     $Screenshot.SaveAsFile("$($execlog)\Pageload.jpeg", $ImageFormat)
 }
@@ -86,7 +86,8 @@ if(Test-Path -Path "$($execlog).zip"){
     Remove-Item -Path $execlog -Recurse
 }
 
-$htmltemplate = @"<html>
+$htmltemplate = @"
+<html>
 <body>
 <style>table { border-collapse: collapse; }tr { border: solid thin; }</style>
 <h1>Selenium Test</h1>
