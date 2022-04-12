@@ -19,5 +19,5 @@
   - name: get the report from selenium server
     ansible.builtin.fetch:
       src: 'C:\apps\jenkins\test.html'
-      dest: "."
+      dest: "./"
       flat: true
