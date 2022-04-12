@@ -4,11 +4,11 @@ New-Item -Path $execlog -ItemType Directory
 
 $report = ""
 
-$iEProcess = Start-Process "C:\apps\jenkins\driver\chromedriver.exe" -PassThru -ArgumentList "/port=5577" #-WindowStyle hidden
+$iEProcess = Start-Process "$($PSScriptRoot)\driver\chromedriver.exe" -PassThru -ArgumentList "/port=5577" #-WindowStyle hidden
 
-$a=[System.Reflection.Assembly]::LoadFrom("C:\apps\jenkins\driver\Selenium.WebDriverBackedSelenium.dll")
-$b=[System.Reflection.Assembly]::LoadFrom("C:\apps\jenkins\driver\WebDriver.dll")
-$c=[System.Reflection.Assembly]::LoadFrom("C:\apps\jenkins\driver\WebDriver.Support.dll")
+$a=[System.Reflection.Assembly]::LoadFrom("$($PSScriptRoot)\driver\Selenium.WebDriverBackedSelenium.dll")
+$b=[System.Reflection.Assembly]::LoadFrom("$($PSScriptRoot)\driver\WebDriver.dll")
+$c=[System.Reflection.Assembly]::LoadFrom("$($PSScriptRoot)\driver\WebDriver.Support.dll")
 $ss = New-Object OpenQA.Selenium.Remote.DesiredCapabilities
 [OpenQA.Selenium.ScreenshotImageFormat]$ImageFormat = [OpenQA.Selenium.ScreenshotImageFormat]::jpeg
 
