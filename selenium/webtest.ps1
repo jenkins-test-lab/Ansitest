@@ -48,7 +48,7 @@ if($finallogin.Text -eq "Login"){
     Write-Output "Login Form loaded successfully."
     $img = $dd.GetScreenshot()
     $report += "<tr><td>$(Get-Date -Format 'dd/MM/yyyy HH:mm:ss'): Login Form loaded successfully</td></tr>"
-    $report += "<tr><td><img src=`"data:image/jpeg;base64,$($img.AsBase64EncodedString)`" width=""800"" height=""600""></td></tr>"
+    $report += "<tr><td><img src=`"data:image/image/png;base64,$($img.AsBase64EncodedString)`" width=""800"" height=""600""></td></tr>"
     $Screenshot = [OpenQA.Selenium.Support.Extensions.WebDriverExtensions]::TakeScreenshot($dd)
     $Screenshot.SaveAsFile("$($execlog)\loginform.jpeg", $ImageFormat)
 }
@@ -98,7 +98,7 @@ $htmltemplate = @"
 
 "@
 
-"<html><body><table>$($report)</table></body></html>" > test.html
+"<html><body><table>$($report)</table></body></html>" > ($PSScriptRoot + "\test.html")
 
 #Copy-Item -Path ""
 
