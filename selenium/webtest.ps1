@@ -65,7 +65,7 @@ if($dd.Url -like "*action_page.html"){
 
 $msg = $dd.FindElementByXPath("/html/body/h1")
 $img = $dd.GetScreenshot()
-if($msg.Text -contains "Logged in successfully"){
+if($msg.Text -match "Logged in successfully"){
     Write-Output "Page logged in successfully"
     
     $report += "<tr><td>$(Get-Date -Format 'dd/MM/yyyy HH:mm:ss'): Page logged in successfully</td></tr>"
