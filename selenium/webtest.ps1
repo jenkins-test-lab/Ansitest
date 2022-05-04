@@ -1,4 +1,4 @@
-﻿$execution = "TestExec-" + (Get-Date -Format "yyyyMMdd-HHmmss")
+$execution = "TestExec-" + (Get-Date -Format "yyyyMMdd-HHmmss")
 $execlog = $PSScriptRoot + "\$($execution)"
 New-Item -Path $execlog -ItemType Directory
 
@@ -64,9 +64,10 @@ if($dd.Url -like "*action_page.html"){
 #if([OpenQA.Selenium.Support.UI.ExpectedConditions]::ElementExists([OpenQA.Selenium.By]::XPath("/html/body/h1")))
 
 $msg = $dd.FindElementByXPath("/html/body/h1")
-if($msg.Text -eq "Logged in successfully"){
+$img = $dd.GetScreenshot()
+if($msg.Text -contains "Logged in successfully"){
     Write-Output "Page logged in successfully"
-    $img = $dd.GetScreenshot()
+    
     $report += "<tr><td>$(Get-Date -Format 'dd/MM/yyyy HH:mm:ss'): Page logged in successfully</td></tr>"
     $report += "<tr><td><img src=`"data:image/jpeg;base64,$($img.AsBase64EncodedString)`" width=""800"" height=""600""></td></tr>"
     $Screenshot = [OpenQA.Selenium.Support.Extensions.WebDriverExtensions]::TakeScreenshot($dd)
@@ -74,6 +75,11 @@ if($msg.Text -eq "Logged in successfully"){
 }
 else{
     Write-Error "Login page loaded failure after login!!!!"
+    $report += "<tr><td>$(Get-Date -Format 'dd/MM/yyyy HH:mm:ss'): Page logged in successfully</td></tr>"
+    $report += "<tr><td style='font-size:16px;color:red'>Page Loaded but content has some failure</td></tr>"
+    $report += "<tr><td><img src=`"data:image/jpeg;base64,$($img.AsBase64EncodedString)`" width=""800"" height=""600""></td></tr>"
+    $Screenshot = [OpenQA.Selenium.Support.Extensions.WebDriverExtensions]::TakeScreenshot($dd)
+    $Screenshot.SaveAsFile("$($execlog)\loginsuccess.jpeg", $ImageFormat)
 }
 
 
@@ -101,7 +107,5 @@ $htmltemplate = @"
 "<html><body><table>$($report)</table></body></html>" > ($PSScriptRoot + "\test.html")
 
 #Copy-Item -Path ""
-
-
 
 
